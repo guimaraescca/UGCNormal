@@ -347,12 +347,14 @@ sub spell_check {
 }
 
 sub expand_lexicon {
-    $siglas_lexicon_file = "$ENV{PWD}/resources/lexico_siglas.txt";
-    $int_lexicon_file = "$ENV{PWD}/resources/lexico_internetes.txt";
-    $int_sigl_lexicon_file = "$ENV{PWD}/resources/lexico_internetes_sigl_abrv.txt";
-    $np_lexicon_file = "$ENV{PWD}/resources/lexico_nome_proprio.txt";
-    $estr_lexicon_file = "$ENV{PWD}/resources/lexico_estrangeirismo.txt";
-    $medidas_lexicon_file = "$ENV{PWD}/resources/lexico_unidade_medida.txt";
+    use File::Basename;
+    my $dirname = dirname(__FILE__);
+    $siglas_lexicon_file = "$dirname/resources/lexico_siglas.txt";
+    $int_lexicon_file = "$dirname/resources/lexico_internetes.txt";
+    $int_sigl_lexicon_file = "$dirname/resources/lexico_internetes_sigl_abrv.txt";
+    $np_lexicon_file = "$dirname/resources/lexico_nome_proprio.txt";
+    $estr_lexicon_file = "$dirname/resources/lexico_estrangeirismo.txt";
+    $medidas_lexicon_file = "$dirname/resources/lexico_unidade_medida.txt";
     open SIGLAS, $siglas_lexicon_file or die $!;
     open INT, $int_lexicon_file or die $!;
     open INT_SIGL, $int_sigl_lexicon_file or die $!;
@@ -423,7 +425,9 @@ sub expand_lexicon {
 
 # remove some rare words related to diacritic (varias - várias, etc.)
 sub clean_lexicon {
-    $blacklist = "$ENV{PWD}/resources/blacklist_gemeas.txt";
+	use File::Basename;
+	my $dirname = dirname(__FILE__);
+    $blacklist = "$dirname/resources/blacklist_gemeas.txt";
 	open BLACKLIST, $blacklist or die $!;
 	chomp(@blacklist_words = <BLACKLIST>);
 	foreach $w (@blacklist_words) {

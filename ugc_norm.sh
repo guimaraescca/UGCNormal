@@ -7,8 +7,9 @@ then
 fi
 
 # Configuracao
-TOKENIZER=$PWD/tokenizer/webtok
-SPELLER_DIR=$PWD/speller
+SCRIPT_DIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
+TOKENIZER=$SCRIPT_DIR/tokenizer/webtok
+SPELLER_DIR=$SCRIPT_DIR/speller
 SPELLER_ARGS=
 INPUT_DIR=$1
 OUTPUT_DIR=$2
@@ -60,7 +61,7 @@ rm -rf $OUTPUT_DIR/tok/checked/siglas
 mkdir $OUTPUT_DIR/tok/checked/siglas
 for f in `find $OUTPUT_DIR/tok/checked -type f`
 do
-    perl ./siglas_map.pl ./resources/lexico_siglas.txt $f > $OUTPUT_DIR/tok/checked/siglas/`basename $f`
+    perl $SCRIPT_DIR/siglas_map.pl $SCRIPT_DIR/resources/lexico_siglas.txt $f > $OUTPUT_DIR/tok/checked/siglas/`basename $f`
 done
 
 
@@ -74,7 +75,7 @@ rm -rf $OUTPUT_DIR/tok/checked/siglas/internetes
 mkdir $OUTPUT_DIR/tok/checked/siglas/internetes
 for f in `find $OUTPUT_DIR/tok/checked/siglas -type f`
 do
-    perl ./internetes_map.pl ./resources/lexico_internetes.txt ./resources/lexico_internetes_sigl_abrv.txt $f > $OUTPUT_DIR/tok/checked/siglas/internetes/`basename $f`
+    perl $SCRIPT_DIR/internetes_map.pl $SCRIPT_DIR/resources/lexico_internetes.txt $SCRIPT_DIR/resources/lexico_internetes_sigl_abrv.txt $f > $OUTPUT_DIR/tok/checked/siglas/internetes/`basename $f`
 done
 
 # normalizador de Nome Proprio
@@ -87,14 +88,14 @@ rm -rf $OUTPUT_DIR/tok/checked/siglas/internetes/nomes
 mkdir $OUTPUT_DIR/tok/checked/siglas/internetes/nomes
 for f in `find $OUTPUT_DIR/tok/checked/siglas/internetes -type f`
 do
-    perl ./np_map.pl ./resources/lexico_nome_proprio.txt $f > $OUTPUT_DIR/tok/checked/siglas/internetes/nomes/`basename $f`
+    perl $SCRIPT_DIR/np_map.pl $SCRIPT_DIR/resources/lexico_nome_proprio.txt $f > $OUTPUT_DIR/tok/checked/siglas/internetes/nomes/`basename $f`
 done
 
 # caixa alta para palavras precedidas por ponto final
 ##################################################
 for f in `find $OUTPUT_DIR/tok/checked/siglas/internetes/nomes -type f`
 do
-	python ./upper_periods.py $f
+	python $SCRIPT_DIR/upper_periods.py $f
 done
 
 IFS=$SAVEIFS
